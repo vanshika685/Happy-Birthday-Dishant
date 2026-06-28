@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Diksha! 🎉</title>
+    <style>
+        /* --- CSS STYLING & RESPONSIVENESS --- */
+        :root {
+            --primary-color: #ff6b81;
+            --secondary-color: #feca57;
+            --bg-color: #0b0b1a; 
+            --text-color: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            text-align: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 3D Heart Canvas Container */
+        .heart-canvas-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px auto;
+            position: relative;
+            background: radial-gradient(circle, rgba(26,20,50,1) 0%, rgba(11,11,26,1) 100%);
+        }
+        #heartCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Rotating Heart Photo Gallery CSS */
+        .heart-gallery-wrapper {
+            height: 350px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            margin: 40px auto;
+            position: relative;
+        }
+
+        .heart-photo-ring {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: rotateHeartRing 12s infinite linear;
+        }
+
+        .heart-photo-ring img {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 4px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: transform 0.5s;
+        }
+
+        /* Positioning the 4 photos to shape a 3D heart arrangement */
+        .heart-photo-ring img:nth-child(1) { transform: rotateY(0deg) translateZ(120px) translateY(-20px); }
+        .heart-photo-ring img:nth-child(2) { transform: rotateY(90deg) translateZ(120px) translateY(20px); }
+        .heart-photo-ring img:nth-child(3) { transform: rotateY(180deg) translateZ(120px) translateY(40px); }
+        .heart-photo-ring img:nth-child(4) { transform: rotateY(270deg) translateZ(120px) translateY(20px); }
+
+        @keyframes rotateHeartRing {
+            from { transform: rotateY(0deg) rotateX(-5deg); }
+            to { transform: rotateY(360deg) rotateX(-5deg); }
+        }
+
+        /* Floating Balloons Background */
+        .balloon-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 50px;
+            height: 65px;
+            background: var(--primary-color);
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            animation: floatUp 8s infinite linear;
+            opacity: 0.5;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-110vh) rotate(20deg); opacity: 0; }
+        }
+
+        /* Layout Sections */
+        section {
+            padding: 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 { font-size: 3.5rem; color: var(--secondary-color); text-shadow: 0 0 15px rgba(254, 202, 87, 0.6); }
+        h2 { font-size: 2rem; margin-bottom: 20px; color: var(--secondary-color); }
+        p { font-size: 1.1rem; line-height: 1.6; }
+
+        /* Audio Control Button */
+        #music-control {
+            position: fixed;
+            top: 20px; right: 20px;
+            z-index: 100;
+            padding: 10px 15px;
+            background: var(--primary-color);
+            border: none; border-radius: 20px;
+            color: white; font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Canvas for Confetti effects */
+        #canvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 99;
+        }
+
+        /* Countdown Timer */
+        .countdown {
+            display: flex; justify-content: center; gap: 15px; margin: 20px 0;
+        }
+        .countdown-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 15px; border-radius: 10px; min-width: 70px;
+            border: 1px solid rgba(254, 202, 87, 0.2);
+        }
+        .countdown-item span { display: block; font-size: 2rem; font-weight: bold; color: var(--secondary-color); }
+
+        /* Animated Cake */
+        .cake-container { margin: 30px auto; width: 150px; height: 150px; position: relative; }
+        .cake {
+            position: absolute; bottom: 0; width: 150px; height: 80px;
+            background: #6c5ce7; border-radius: 10px 10px 0 0;
+        }
+        .cake::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 20px;
+            background: #fd79a8; border-radius: 10px 10px 0 0;
+        }
+        .candle {
+            position: absolute; top: -30px; left: 67px; width: 16px; height: 30px;
+            background: #ffeaa7; border-radius: 4px;
+        }
+        .flame {
+            position: absolute; top: -15px; left: 3px; width: 10px; height: 15px;
+            background: #ff7675; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: flicker 0.5s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { transform: scale(1); background: #ff7675; }
+            100% { transform: scale(1.2); background: #e17055; }
+        }
+
+        /* Interactive Gift Box */
+        .gift-container { margin: 40px auto; width: 100px; height: 100px; cursor: pointer; position: relative; }
+        .gift-box {
+            width: 100px; height: 100px; background: #ff7675; position: relative;
+            border-radius: 5px; transition: transform 0.5s;
+        }
+        .gift-box::before { content: ''; position: absolute; left: 43px; width: 14px; height: 100%; background: #ffeaa7; }
+        .gift-box::after { content: ''; position: absolute; top: 43px; width: 100%; height: 14px; background: #ffeaa7; }
+        .gift-container.open .gift-box { transform: translateY(20px) scale(0); opacity: 0; }
+        .gift-reward {
+            position: absolute; top: 20px; left: -50px; width: 200px; text-align: center;
+            font-size: 1.5rem; font-weight: bold; opacity: 0; transform: scale(0);
+            transition: all 0.5s ease; color: var(--secondary-color);
+        }
+        .gift-container.open .gift-reward { opacity: 1; transform: scale(1); }
+
+        /* Video Container */
+        .video-wrapper {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%;
+            border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
+        /* Secret Message Box */
+        .secret-box {
+            background: rgba(255, 255, 255, 0.05); padding: 30px; border-radius: 15px;
+            border: 1px dashed var(--primary-color); display: inline-block; width: 100%; max-width: 400px;
+        }
+        .secret-box input { padding: 10px; border-radius: 5px; border: none; margin-bottom: 10px; width: 80%; text-align: center; color: #000; font-weight: bold; }
+        .secret-box button { padding: 10px 20px; border-radius: 5px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer; }
+        #secret-message { margin-top: 15px; font-weight: bold; font-size: 1.2rem; display: none; line-height: 1.5; }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.3rem; }
+            h2 { font-size: 1.6rem; }
+            .countdown-item { padding: 10px; min-width: 55px; }
+            .countdown-item span { font-size: 1.5rem; }
+            .heart-canvas-container { height: 300px; }
+            .heart-gallery-wrapper { height: 280px; }
+            .heart-photo-ring img { width: 95px; height: 95px; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" src="nastelbom-happy-birthday-495860.mp3?v=5" loop></audio>
+    <button id="music-control">🎵 Play Music</button>
+
+    <canvas id="canvas"></canvas>
+    
+    <div class="balloon-container" id="balloon-container"></div>
+
+    <section>
+        <h1>Happy Birthday Diksha! 💛</h1>
+        <div class="heart-canvas-container">
+            <canvas id="heartCanvas"></canvas>
+        </div>
+    </section>
+
+    <section>
+        <h2>Our Special Moments 📸</h2>
+        <div class="heart-gallery-wrapper">
+            <div class="heart-photo-ring">
+                <img src="photo1.jpg.jpeg" alt="Memory 1">
+                <img src="photo2.jpg.jpeg" alt="Memory 2">
+                <img src="photo3.jpg.jpeg" alt="Memory 3">
+                <img src="photo4.jpg.jpeg" alt="Memory 4">
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>The Celebration Begins In...</h2>
+        <div class="countdown">
+            <div class="countdown-item"><span id="mins">01</span>Min</div>
+            <div class="countdown-item"><span id="secs">00</span>Sec</div>
+        </div>
+    </section>
+
+    <section>
+        <div class="cake-container">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="cake"></div>
+        </div>
+        <p>Make a wish and blow out the candle!</p>
+    </section>
+
+    <section>
+        <h2>Tap to Open Your Gift! 🎁</h2>
+        <div class="gift-container" id="gift" onclick="openGift()">
+            <div class="gift-box"></div>
+            <div class="gift-reward">❤️ My heart for you</div>
+        </div>
+    </section>
+
+    <section>
+        <h2>A Special Message For You 📹</h2>
+        <div class="video-wrapper">
+            <iframe src="https://www.youtube.com/embed/gT7J4O1Ax_Q" title="Birthday Video" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section>
+        <h2>💌 Top Secret Message</h2>
+        <div class="secret-box">
+            <input type="password" id="password-input" placeholder="Enter Secret Code...">
+            <br>
+            <button onclick="checkPassword()">Unlock Message</button>
+            <div id="secret-message"></div>
+        </div>
+    </section>
+
+    <script>
+        // 1. Music Logic
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-control');
+        musicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play().catch(error => {
+                    console.log("Audio play failed.", error);
+                });
+                musicBtn.innerText = "⏸️ Pause Music";
+            } else {
+                music.pause();
+                musicBtn.innerText = "🎵 Play Music";
+            }
+        });
+
+        // 2. Exact 1-Minute Countdown Timer Logic
+        const duration = 60 * 1000; 
+        const targetDate = new Date().getTime() + duration;
+
+        const timerInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                clearInterval(timerInterval);
+                document.getElementById('mins').innerText = '00';
+                document.getElementById('secs').innerText = '00';
+                triggerConfetti();
+                return;
+            }
+
+            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('mins').innerText = m < 10 ? '0' + m : m;
+            document.getElementById('secs').innerText = s < 10 ? '0' + s : s;
+        }, 1000);
+
+        // 3. Shimmering 3D Golden Heart Formation Engine
+        const hCanvas = document.getElementById('heartCanvas');
+        const hCtx = hCanvas.getContext('2d');
+        let heartParticles = [];
+        let angleY = 0;
+
+        function resizeHeartCanvas() {
+            hCanvas.width = hCanvas.parentElement.clientWidth;
+            hCanvas.height = hCanvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeHeartCanvas);
+        resizeHeartCanvas();
+
+        function initHeart() {
+            heartParticles = [];
+            const totalParticles = 450;
+            for (let i = 0; i < totalParticles; i++) {
+                const t = Math.PI * 2 * (i / totalParticles);
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                const z = (Math.random() - 0.5) * 10; 
+                
+                heartParticles.push({
+                    targetX: x * 7, targetY: y * 7, targetZ: z * 7,
+                    x: (Math.random() - 0.5) * hCanvas.width, 
+                    y: (Math.random() - 0.5) * hCanvas.height,
+                    z: (Math.random() - 0.5) * 200,
+                    size: Math.random() * 2 + 1.5,
+                    brightness: Math.random() * 40 + 60
+                });
+            }
+        }
+
+        function drawHeart() {
+            hCtx.clearRect(0, 0, hCanvas.width, hCanvas.height);
+            const cx = hCanvas.width / 2;
+            const cy = hCanvas.height / 2;
+            angleY += 0.015; 
+
+            heartParticles.forEach(p => {
+                p.x += (p.targetX - p.x) * 0.05;
+                p.y += (p.targetY - p.y) * 0.05;
+                p.z += (p.targetZ - p.z) * 0.05;
+
+                const cosY = Math.cos(angleY);
+                const sinY = Math.sin(angleY);
+                const x3d = p.x * cosY - p.z * sinY;
+                const z3d = p.z * cosY + p.x * sinY;
+
+                const perspective = 300 / (300 + z3d);
+                const finalX = cx + x3d * perspective;
+                const finalY = cy + p.y * perspective;
+                const finalSize = Math.max(0.5, p.size * perspective);
+
+                hCtx.beginPath();
+                hCtx.arc(finalX, finalY, finalSize, 0, Math.PI * 2);
+                hCtx.fillStyle = `hsla(43, 98%, ${p.brightness}%, ${perspective})`;
+                hCtx.shadowBlur = 10;
+                hCtx.shadowColor = '#feca57';
+                hCtx.fill();
+            });
+            hCtx.shadowBlur = 0; 
+            requestAnimationFrame(drawHeart);
+        }
+        initHeart();
+        drawHeart();
+
+        // 4. Floating Balloons
+        const balloonContainer = document.getElementById('balloon-container');
+        const colors = ['#ff6b81', '#feca57', '#5f27cd', '#1dd1a1', '#ff9f43'];
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.classList.add('balloon');
+            balloon.style.left = Math.random() * 100 + 'vw';
+            balloon.style.animationDuration = (Math.random() * 4 + 6) + 's';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            balloonContainer.appendChild(balloon);
+            setTimeout(() => { balloon.remove(); }, 10000);
+        }
+        setInterval(createBalloon, 900);
+
+        // 5. Gift Box Trigger
+        function openGift() {
+            const gift = document.getElementById('gift');
+            if(!gift.classList.contains('open')) {
+                gift.classList.add('open');
+                triggerConfetti();
+            }
+        }
+
+        // 6. Secret Message Unlocker (Password: DISHU)
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            const msgDiv = document.getElementById('secret-message');
+            
+            if (input === 'DISHU') {
+                msgDiv.style.display = "block";
+                
+                msgDiv.innerHTML = "🎉 UNLOCKED! 🎉<br><br>" + 
+                                   "Dearest Diksha,<br>" + 
+                                   "You mean the absolute world to me. Every moment with you is special, " +
+                                   "and I am so incredibly lucky to have you in my life. I hope this birthday " +
+                                   "brings you all the happiness, laughter, and love you deserve. " +
+                                   "their is lot of fun doing gym with you " +
+                                   "also your silly habits are the reason of my smile everyday " +
+                                   "everything looks more fun when you are around" +
+                                   " time flies like anything when you are with me it always feels less and I wish I would have more time daily to spend with you" +
+                                   " life isn't happening but everything feels beautiful and exciting with you" +
+                                   " I don't express much but u mean alot for me and so much special " +
+                                   " In the end i hope u enjoy your life to the fullest great journey ahead buddy" +
+                                   "<br><br>Happy Birthday, my favorite person! ❤️";
+                                   
+                msgDiv.style.color = "#55efc4";
+                triggerConfetti();
+            } else {
+                msgDiv.style.display = "block";
+                msgDiv.innerHTML = "❌ Wrong code! Hint: Her nickname in ALL CAPS.";
+                msgDiv.style.color = "#ff7675";
+            }
+        }
+
+        // 7. Fallback Canvas Background Confetti
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function triggerConfetti() {
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width, y: Math.random() * canvas.height - canvas.height,
+                    r: Math.random() * 6 + 4, d: Math.random() * canvas.height,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    tilt: Math.random() * 10 - 5, tiltAngleIncremental: Math.random() * 0.07 + 0.02, tiltAngle: 0
+                });
+            }
+        }
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, index) => {
+                p.tiltAngle += p.tiltAngleIncremental; p.y += (Math.cos(p.d) + 3 + p.r / 2) / 2; p.x += Math.sin(p.tiltAngle);
+                p.tilt = Math.sin(p.tiltAngle - index / 3) * 15;
+                ctx.beginPath(); ctx.lineWidth = p.r; ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r / 2, p.y); ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2); ctx.stroke();
+                if (p.y > canvas.height) particles.splice(index, 1);
+            });
+            requestAnimationFrame(drawParticles);
+        }
+        drawParticles();
+    </script>
+</body>
+</html>
